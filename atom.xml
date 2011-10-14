@@ -4,7 +4,7 @@
   <title><![CDATA[StrongSoft Lab]]></title>
   <link href="http://sslab.github.com/atom.xml" rel="self"/>
   <link href="http://sslab.github.com/"/>
-  <updated>2011-10-14T11:40:10+08:00</updated>
+  <updated>2011-10-14T12:37:55+08:00</updated>
   <id>http://sslab.github.com/</id>
   <author>
     <name><![CDATA[Yan-hong Lin]]></name>
@@ -12,5 +12,14 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hello, Octopress]]></title>
+    <link href="http://sslab.github.com/blog/2011/10/14/hello/"/>
+    <updated>2011-10-14T12:33:00+08:00</updated>
+    <id>http://sslab.github.com/blog/2011/10/14/hello</id>
+    <content type="html"><![CDATA[<p>Just another octopress blog.</p>
+]]></content>
+  </entry>
   
 </feed>
