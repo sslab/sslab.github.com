@@ -6,19 +6,17 @@ comments: true
 categories: 
 ---
 
-Just another octopress blog.
+這個網站使用 [Octopress](http://octopress.org/) 架設，
+並使用免費的 [GitHub Pages](http://pages.github.com/) 網頁空間。
 
-This blog site is using the Octopress framework and host on GitHub ...
-
-本部落格使用 Octopress + GitHub 架設！ It's free ...
-
-看到 Octopress 讓我覺得很驚豔，
-用 Markdown 格式可以很快寫好一篇網誌，
-接著用 rake 指令就能 generate / deploy 到 GitHub ，
-和每次 Coding 工作流程很接近，
-有一種親切感。
+> 看到 Octopress 讓我覺得很驚豔，
+> 用 Markdown 格式可以很快寫好一篇網誌，
+> 接著用 rake 指令就能 generate / deploy 到 GitHub ，
+> 和每次 Coding 工作流程很接近，
+> 有一種親切感。
 
 延伸閱讀
 
-* 介紹 http://lyhdev.com/note:octopress
-* 安裝教學 http://blog.lyhdev.com/2011/10/octopress-github-markdown.html
+* [介紹](http://lyhdev.com/note:octopress)
+* [安裝教學](http://blog.lyhdev.com/2011/10/octopress-github-markdown.html)
+
