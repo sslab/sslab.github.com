@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[StrongSoft Lab]]></title>
+  <title><![CDATA[Hack × StrongSoft]]></title>
   <link href="http://sslab.github.com/atom.xml" rel="self"/>
   <link href="http://sslab.github.com/"/>
-  <updated>2011-10-14T21:00:15+08:00</updated>
+  <updated>2011-11-03T14:23:34+08:00</updated>
   <id>http://sslab.github.com/</id>
   <author>
-    <name><![CDATA[Yan-hong Lin]]></name>
+    <name><![CDATA[StrongSoft]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
@@ -18,22 +18,20 @@
     <link href="http://sslab.github.com/blog/2011/10/14/hello/"/>
     <updated>2011-10-14T12:33:00+08:00</updated>
     <id>http://sslab.github.com/blog/2011/10/14/hello</id>
-    <content type="html"><![CDATA[<p>Just another octopress blog.
-This blog site is using the Octopress framework and host on GitHub &#8230;</p>
+    <content type="html"><![CDATA[<p>這個網站使用 <a href="http://octopress.org/">Octopress</a> 架設，
+並使用免費的 <a href="http://pages.github.com/">GitHub Pages</a> 網頁空間。</p>
 
-<p>本部落格使用 Octopress + GitHub 架設！ It&#8217;s free &#8230;</p>
-
-<p>看到 Octopress 讓我覺得很驚豔，
+<blockquote><p>看到 Octopress 讓我覺得很驚豔，
 用 Markdown 格式可以很快寫好一篇網誌，
 接著用 rake 指令就能 generate / deploy 到 GitHub ，
 和每次 Coding 工作流程很接近，
-有一種親切感。</p>
+有一種親切感。</p></blockquote>
 
 <p>延伸閱讀</p>
 
 <ul>
-<li>介紹 http://lyhdev.com/note:octopress</li>
-<li>安裝教學 http://blog.lyhdev.com/2011/10/octopress-github-markdown.html</li>
+<li><a href="http://lyhdev.com/note:octopress">介紹</a></li>
+<li><a href="http://blog.lyhdev.com/2011/10/octopress-github-markdown.html">安裝教學</a></li>
 </ul>
 
 ]]></content>
