@@ -4,7 +4,7 @@
   <title><![CDATA[Hack × StrongSoft]]></title>
   <link href="http://sslab.github.com/atom.xml" rel="self"/>
   <link href="http://sslab.github.com/"/>
-  <updated>2011-11-03T14:53:18+08:00</updated>
+  <updated>2011-11-03T14:56:34+08:00</updated>
   <id>http://sslab.github.com/</id>
   <author>
     <name><![CDATA[StrongSoft]]></name>
@@ -21,13 +21,17 @@
     <content type="html"><![CDATA[<p>這個網站使用 <a href="http://octopress.org/">Octopress</a> 架設，
 並使用免費的 <a href="http://pages.github.com/">GitHub Pages</a> 網頁空間。</p>
 
-<blockquote><p>看到 Octopress 讓我覺得很驚豔，
-用 Markdown 格式可以很快寫好一篇網誌，
-接著用 rake 指令就能 generate / deploy 到 GitHub ，
-和每次 Coding 工作流程很接近，
-有一種親切感。</p></blockquote>
+<p>第一次使用 Octopress，就發現「回不去了」！</p>
 
-<p>延伸閱讀</p>
+<blockquote><p>看到 Octopress 讓我覺得很驚豔，
+用 Markdown 語法很快寫好一篇網誌，
+接著用 rake 就能 generate 並 deploy 到 GitHub ，
+就像在 Coding 一樣快樂無比，
+很有親切感。</p></blockquote>
+
+<p>每位想寫網誌的 hacker 或 geek，一定要試試 Octopress : )</p>
+
+<h2>延伸閱讀</h2>
 
 <ul>
 <li><a href="http://lyhdev.com/note:octopress">介紹</a></li>
