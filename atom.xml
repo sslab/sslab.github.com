@@ -4,7 +4,7 @@
   <title><![CDATA[StrongSoft Lab]]></title>
   <link href="http://sslab.github.com/atom.xml" rel="self"/>
   <link href="http://sslab.github.com/"/>
-  <updated>2011-10-14T21:00:15+08:00</updated>
+  <updated>2011-11-03T11:57:23+08:00</updated>
   <id>http://sslab.github.com/</id>
   <author>
     <name><![CDATA[Yan-hong Lin]]></name>
@@ -18,8 +18,9 @@
     <link href="http://sslab.github.com/blog/2011/10/14/hello/"/>
     <updated>2011-10-14T12:33:00+08:00</updated>
     <id>http://sslab.github.com/blog/2011/10/14/hello</id>
-    <content type="html"><![CDATA[<p>Just another octopress blog.
-This blog site is using the Octopress framework and host on GitHub &#8230;</p>
+    <content type="html"><![CDATA[<p>Just another octopress blog.</p>
+
+<p>This blog site is using the Octopress framework and host on GitHub &#8230;</p>
 
 <p>本部落格使用 Octopress + GitHub 架設！ It&#8217;s free &#8230;</p>
 
