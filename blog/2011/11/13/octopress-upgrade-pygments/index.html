@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hack × StrongSoft</title>
+  <title>讓 Octopress 支援更多語言的程式碼區塊（更新 Pygments） - Hack × StrongSoft</title>
   <meta name="author" content="StrongSoft">
 
   
@@ -20,7 +20,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sslab.github.com">
+  <link rel="canonical" href="http://sslab.github.com/blog/2011/11/13/octopress-upgrade-pygments">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -74,15 +74,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2011/11/13/octopress-upgrade-pygments/">讓 Octopress 支援更多語言的程式碼區塊（更新 Pygments）</a></h1>
+      <h1 class="entry-title">讓 Octopress 支援更多語言的程式碼區塊（更新 Pygments）</h1>
     
     
       <p class="meta">
@@ -95,14 +92,14 @@
 
 <time datetime="2011-11-13T16:00:00+08:00" pubdate>Nov 13<span>th</span>, 2011</time>
         
-         | <a href="/blog/2011/11/13/octopress-upgrade-pygments/#disqus_thread">Comments</a>
+         | <a href="#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>如果在 Octopress 的文章中，程式碼區塊用了不支援的程式語言，例如 Groovy：</p>
+<div class="entry-content"><p>如果在 Octopress 的文章中，程式碼區塊用了不支援的程式語言，例如 Groovy：</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -155,150 +152,64 @@
 
 <p>回到 Octopress Blog 重新執行 rake generate，應該就不會爆炸了。</p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/11/13/groovy-grab-markdownj/">MarkdownJ 使用範例（Groovy + Grab）</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
   
 
-<time datetime="2011-11-13T09:40:00+08:00" pubdate>Nov 13<span>th</span>, 2011</time>
-        
-         | <a href="/blog/2011/11/13/groovy-grab-markdownj/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
+<span class="byline author vcard">Posted by <span class="fn">StrongSoft</span></span>
 
-
-  <div class="entry-content"><p><a href="http://lyhdev.com/note:markdown">Markdown</a> 是一種易讀易寫的輕量文字格式。</p>
-
-<p>要將 Markdown 轉換成其他格式，除了命令列的 <a href="http://johnmacfarlane.net/pandoc/">Pandoc</a> 工具外，
-Java / Groovy 程式可以利用 MarkdownJ 這個函式庫。</p>
-
-<p>在這個 <a href="http://code.google.com/p/markdownj/wiki/Maven">頁面</a> 可以找到 MarkdownJ 的 Maven Repository 來源，
-因此加入一行 Groovy 的 Grab 設定：</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="nd">@GrabResolver</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;scala-tools&#39;</span><span class="o">,</span> <span class="n">root</span><span class="o">=</span><span class="s1">&#39;http://scala-tools.org/repo-releases&#39;</span><span class="o">)</span>
-</span><span class='line'><span class="nd">@Grab</span><span class="o">(</span><span class="s1">&#39;org.markdownj:markdownj:0.3.0-1.0.2b4&#39;</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>接著就可以引用 MarkdownProcessor 類別。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kn">import</span> <span class="nn">com.petebevin.markdown.MarkdownProcessor</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>使用 MarkdownProcessor 的 markdown 方法，可以將一段 Markdown 格式的字串轉換成 HTML 代碼。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kt">def</span> <span class="n">m</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MarkdownProcessor</span><span class="o">()</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">println</span> <span class="n">m</span><span class="o">.</span><span class="na">markdown</span><span class="o">(</span><span class="s1">&#39;&#39;&#39;</span>
-</span><span class='line'><span class="s1">Heading</span>
-</span><span class='line'><span class="s1">=======</span>
-</span><span class='line'>
-</span><span class='line'><span class="s1">* item1</span>
-</span><span class='line'><span class="s1">* item2</span>
-</span><span class='line'><span class="s1">* item3</span>
-</span><span class='line'><span class="s1">&#39;&#39;&#39;</span><span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>範例程式碼可以從 <a href="https://gist.github.com/1361439">Gist</a> 取得。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/10/14/hello/">Hello, Octopress</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
 
   
 
-<time datetime="2011-10-14T12:33:00+08:00" pubdate>Oct 14<span>th</span>, 2011</time>
-        
-         | <a href="/blog/2011/10/14/hello/#disqus_thread">Comments</a>
-        
-      </p>
+<time datetime="2011-11-13T16:00:00+08:00" pubdate>Nov 13<span>th</span>, 2011</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+  
+</span>
+
+
+    </p>
     
-  </header>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sslab.github.com/blog/2011/11/13/octopress-upgrade-pygments/" data-via="" data-counturl="http://sslab.github.com/blog/2011/11/13/octopress-upgrade-pygments/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/11/13/groovy-grab-markdownj/" title="Previous Post: MarkdownJ 使用範例（Groovy + Grab）">&laquo; MarkdownJ 使用範例（Groovy + Grab）</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-  <div class="entry-content"><p>這個網站使用 <a href="http://octopress.org/">Octopress</a> 架設，
-並使用免費的 <a href="http://pages.github.com/">GitHub Pages</a> 網頁空間。</p>
-
-<p>第一次使用 Octopress，就發現「回不去了」！</p>
-
-<blockquote><p>看到 Octopress 讓我覺得很驚豔，
-用 Markdown 語法很快寫好一篇網誌，
-接著用 rake 就能 generate 並 deploy 到 GitHub ，
-就像在 Coding 一樣快樂無比，
-很有親切感。</p></blockquote>
-
-<p>每位想寫網誌的 hacker 或 geek，一定要試試 Octopress : )</p>
-
-<h2>延伸閱讀</h2>
-
-<ul>
-<li><a href="http://lyhdev.com/note:octopress">介紹</a></li>
-<li><a href="http://blog.lyhdev.com/2011/10/octopress-github-markdown.html">安裝教學</a></li>
-</ul>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -328,6 +239,7 @@ Java / Groovy 程式可以利用 MarkdownJ 這個函式庫。</p>
   
 </aside>
 
+
     </div>
   </div>
   <footer role="contentinfo"><p>
@@ -342,7 +254,10 @@ Java / Groovy 程式可以利用 MarkdownJ 這個函式庫。</p>
       var disqus_shortname = 'sslab-hack';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sslab.github.com/blog/2011/11/13/octopress-upgrade-pygments/';
+        var disqus_url = 'http://sslab.github.com/blog/2011/11/13/octopress-upgrade-pygments/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

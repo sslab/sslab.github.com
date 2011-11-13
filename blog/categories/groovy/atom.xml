@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Groovy | Hack × StrongSoft]]></title>
+  <link href="http://sslab.github.com/blog/categories/groovy/atom.xml" rel="self"/>
+  <link href="http://sslab.github.com/"/>
+  <updated>2011-11-13T16:37:23+08:00</updated>
+  <id>http://sslab.github.com/</id>
+  <author>
+    <name><![CDATA[StrongSoft]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[MarkdownJ 使用範例（Groovy + Grab）]]></title>
+    <link href="http://sslab.github.com/blog/2011/11/13/groovy-grab-markdownj/"/>
+    <updated>2011-11-13T09:40:00+08:00</updated>
+    <id>http://sslab.github.com/blog/2011/11/13/groovy-grab-markdownj</id>
+    <content type="html"><![CDATA[<p><a href="http://lyhdev.com/note:markdown">Markdown</a> 是一種易讀易寫的輕量文字格式。</p>
+
+<p>要將 Markdown 轉換成其他格式，除了命令列的 <a href="http://johnmacfarlane.net/pandoc/">Pandoc</a> 工具外，
+Java / Groovy 程式可以利用 MarkdownJ 這個函式庫。</p>
+
+<p>在這個 <a href="http://code.google.com/p/markdownj/wiki/Maven">頁面</a> 可以找到 MarkdownJ 的 Maven Repository 來源，
+因此加入一行 Groovy 的 Grab 設定：</p>
+
+<p><code>groovy
+@GrabResolver(name='scala-tools', root='http://scala-tools.org/repo-releases')
+@Grab('org.markdownj:markdownj:0.3.0-1.0.2b4')
+</code></p>
+
+<p>接著就可以引用 MarkdownProcessor 類別。</p>
+
+<p><code>groovy
+import com.petebevin.markdown.MarkdownProcessor
+</code></p>
+
+<p>使用 MarkdownProcessor 的 markdown 方法，可以將一段 Markdown 格式的字串轉換成 HTML 代碼。</p>
+
+<p>``` groovy
+def m = new MarkdownProcessor()</p>
+
+<p>println m.markdown('''</p>
+
+<h1>Heading</h1>
+
+<ul>
+<li>item1</li>
+<li>item2</li>
+<li>item3
+''')
+```</li>
+</ul>
+
+
+<p>範例程式碼可以從 <a href="https://gist.github.com/1361439">Gist</a> 取得。</p>
+]]></content>
+  </entry>
+  
+</feed>

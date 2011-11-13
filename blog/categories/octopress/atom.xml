@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Octopress | Hack × StrongSoft]]></title>
+  <link href="http://sslab.github.com/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://sslab.github.com/"/>
+  <updated>2011-11-13T16:37:23+08:00</updated>
+  <id>http://sslab.github.com/</id>
+  <author>
+    <name><![CDATA[StrongSoft]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[讓 Octopress 支援更多語言的程式碼區塊（更新 Pygments）]]></title>
+    <link href="http://sslab.github.com/blog/2011/11/13/octopress-upgrade-pygments/"/>
+    <updated>2011-11-13T16:00:00+08:00</updated>
+    <id>http://sslab.github.com/blog/2011/11/13/octopress-upgrade-pygments</id>
+    <content type="html"><![CDATA[<p>如果在 Octopress 的文章中，程式碼區塊用了不支援的程式語言，例如 Groovy：</p>
+
+<p><code>
+</code> groovy
+ println 'hello'
+ <code>
+</code></p>
+
+<p>執行 rake generate 就會爆炸！</p>
+
+<blockquote><p>/Users/user1/.rvm/gems/ruby-1.9.2-p290/gems/rubypython-0.5.1/lib/rubypython/rubypyproxy.rb:198:in `method_missing': ClassNotFound: no lexer for alias 'groovy' found (RubyPython::PythonError)</p></blockquote>
+
+<p>因為 Octopress 的程式碼區塊 Syntax Highlight，
+是使用 <a href="https://github.com/tmm1/pygments.rb">pygments.rb</a> 這個套件；
+而 pygments.rb 會再去呼叫 Python 的 <a href="http://pygments.org/">Pygments</a>，
+因此災難的源頭就是 Pygments 不支援區塊指定的程式語言。</p>
+
+<p>但如果從 Pygments 的 <a href="http://pygments.org/languages/">Supported languages</a> 清單，
+卻又可能發現清單中明明有列出該語言名稱。
+這時候必須到 <a href="http://pygments.org/docs/lexers/">Available lexers</a> 查詢，
+如果在程式語言的說明有一行 <strong>New in Pygments 1.5.</strong> ，
+就表示只要將 Pygments 更新到 1.5 版，
+即可支援該程式語言（目前 Pygments 的穩定版為 1.4）。</p>
+
+<p>更新的步驟如下：</p>
+
+<p>先切換到 pygments.rb 資料夾</p>
+
+<p><code>bash
+cd .rvm/gems/ruby-1.9.2-p290/gems/pygments.rb-0.1.3/vendor
+</code></p>
+
+<p>用 hg 下載一份最新版 <a href="https://bitbucket.org/birkenfeld/pygments-main">Pygments</a>，</p>
+
+<p><code>bash
+hg clone https://bitbucket.org/birkenfeld/pygments-main
+</code></p>
+
+<p>再將 Pygments-1.4 的資料夾掉包</p>
+
+<p><code>bash
+mv Pygments-1.4 Pygments-1.4-old
+mv pygments-main Pygments-1.4
+</code></p>
+
+<p>回到 Octopress Blog 重新執行 rake generate，應該就不會爆炸了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hello, Octopress]]></title>
+    <link href="http://sslab.github.com/blog/2011/10/14/hello/"/>
+    <updated>2011-10-14T12:33:00+08:00</updated>
+    <id>http://sslab.github.com/blog/2011/10/14/hello</id>
+    <content type="html"><![CDATA[<p>這個網站使用 <a href="http://octopress.org/">Octopress</a> 架設，
+並使用免費的 <a href="http://pages.github.com/">GitHub Pages</a> 網頁空間。</p>
+
+<p>第一次使用 Octopress，就發現「回不去了」！</p>
+
+<blockquote><p>看到 Octopress 讓我覺得很驚豔，
+用 Markdown 語法很快寫好一篇網誌，
+接著用 rake 就能 generate 並 deploy 到 GitHub ，
+就像在 Coding 一樣快樂無比，
+很有親切感。</p></blockquote>
+
+<p>每位想寫網誌的 hacker 或 geek，一定要試試 Octopress : )</p>
+
+<h2>延伸閱讀</h2>
+
+<ul>
+<li><a href="http://lyhdev.com/note:octopress">介紹</a></li>
+<li><a href="http://blog.lyhdev.com/2011/10/octopress-github-markdown.html">安裝教學</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
