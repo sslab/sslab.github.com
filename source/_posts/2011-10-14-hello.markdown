@@ -3,19 +3,24 @@ layout: post
 title: "Hello, Octopress"
 date: 2011-10-14 12:33
 comments: true
-categories: 
+categories: Octopress
 ---
 
 這個網站使用 [Octopress](http://octopress.org/) 架設，
 並使用免費的 [GitHub Pages](http://pages.github.com/) 網頁空間。
 
+第一次使用 Octopress，就發現「回不去了」！
+
 > 看到 Octopress 讓我覺得很驚豔，
-> 用 Markdown 格式可以很快寫好一篇網誌，
-> 接著用 rake 指令就能 generate / deploy 到 GitHub ，
-> 和每次 Coding 工作流程很接近，
-> 有一種親切感。
+> 用 Markdown 語法很快寫好一篇網誌，
+> 接著用 rake 就能 generate 並 deploy 到 GitHub ，
+> 就像在 Coding 一樣快樂無比，
+> 很有親切感。
+
+每位想寫網誌的 hacker 或 geek，一定要試試 Octopress : )
 
 延伸閱讀
+--------
 
 * [介紹](http://lyhdev.com/note:octopress)
 * [安裝教學](http://blog.lyhdev.com/2011/10/octopress-github-markdown.html)
