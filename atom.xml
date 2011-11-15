@@ -4,7 +4,7 @@
   <title><![CDATA[Hack × StrongSoft]]></title>
   <link href="http://sslab.github.com/atom.xml" rel="self"/>
   <link href="http://sslab.github.com/"/>
-  <updated>2011-11-13T16:56:18+08:00</updated>
+  <updated>2011-11-15T10:01:14+08:00</updated>
   <id>http://sslab.github.com/</id>
   <author>
     <name><![CDATA[StrongSoft]]></name>
@@ -12,6 +12,175 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[解決 Gradle dependency 處理速度慢的問題]]></title>
+    <link href="http://sslab.github.com/blog/2011/11/15/gradle-dependency-slow-problem/"/>
+    <updated>2011-11-15T09:42:00+08:00</updated>
+    <id>http://sslab.github.com/blog/2011/11/15/gradle-dependency-slow-problem</id>
+    <content type="html"><![CDATA[<p>Gradle 的 dependencies 可以設定 Maven Repository 的套件，
+讓 Gradle 自動下載相依的 Jar 檔案。
+例如 <a href="http://groovy.codehaus.org/modules/http-builder/">HttpBuilder</a> 的設定範例（build.gradle）：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">dependencies</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">groovy</span> <span class="s1">&#39;org.codehaus.groovy:groovy-all:1.8.3&#39;</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="s1">&#39;org.codehaus.groovy.modules.http-builder:http-builder:0.5.1&#39;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但有時候加入了某些相依套件，
+會讓建置程序變得超級慢，
+因此在 gradle task 執行時，
+會卡在「Resolve dependencies」這個訊息很久。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="o">&gt;</span> <span class="n">Building</span> <span class="o">&gt;</span> <span class="o">:</span><span class="n">compileGroovy</span> <span class="o">&gt;</span> <span class="n">Resolve</span> <span class="n">dependencies</span> <span class="s1">&#39;:compile&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>利用以下的指令，可以檢查目前專案依賴的套件共有哪些。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">gradle</span> <span class="n">dependencies</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>執行後將會看到這個輸出結果：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">compile</span> <span class="o">-</span> <span class="n">Classpath</span> <span class="k">for</span> <span class="n">compiling</span> <span class="n">the</span> <span class="n">main</span> <span class="n">sources</span><span class="o">.</span>
+</span><span class='line'><span class="o">+---</span> <span class="n">org</span><span class="o">.</span><span class="na">codehaus</span><span class="o">.</span><span class="na">groovy</span><span class="o">:</span><span class="n">groovy</span><span class="o">-</span><span class="nl">all:</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">3</span> <span class="o">[</span><span class="k">default</span><span class="o">]</span>
+</span><span class='line'><span class="err">\</span><span class="o">---</span> <span class="n">org</span><span class="o">.</span><span class="na">codehaus</span><span class="o">.</span><span class="na">groovy</span><span class="o">.</span><span class="na">modules</span><span class="o">.</span><span class="na">http</span><span class="o">-</span><span class="nl">builder:</span><span class="n">http</span><span class="o">-</span><span class="nl">builder:</span><span class="mf">0.5</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="k">default</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">+---</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">httpcomponents</span><span class="o">:</span><span class="nl">httpclient:</span><span class="mf">4.0</span><span class="o">.</span><span class="mi">3</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">httpcomponents</span><span class="o">:</span><span class="nl">httpcore:</span><span class="mf">4.0</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">logging:</span><span class="n">commons</span><span class="o">-</span><span class="nl">logging:</span><span class="mf">1.1</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="err">\</span><span class="o">---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">codec:</span><span class="n">commons</span><span class="o">-</span><span class="nl">codec:</span><span class="mf">1.3</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">+---</span> <span class="n">net</span><span class="o">.</span><span class="na">sf</span><span class="o">.</span><span class="na">json</span><span class="o">-</span><span class="nl">lib:</span><span class="n">json</span><span class="o">-</span><span class="nl">lib:</span><span class="mf">2.3</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">logging:</span><span class="n">commons</span><span class="o">-</span><span class="nl">logging:</span><span class="mf">1.1</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span> <span class="o">(*)</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">beanutils:</span><span class="n">commons</span><span class="o">-</span><span class="nl">beanutils:</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">0</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">|</span>    <span class="err">\</span><span class="o">---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">logging:</span><span class="n">commons</span><span class="o">-</span><span class="nl">logging:</span><span class="mf">1.1</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span> <span class="o">(*)</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">collections:</span><span class="n">commons</span><span class="o">-</span><span class="nl">collections:</span><span class="mf">3.2</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">lang:</span><span class="n">commons</span><span class="o">-</span><span class="nl">lang:</span><span class="mf">2.4</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="err">\</span><span class="o">---</span> <span class="n">net</span><span class="o">.</span><span class="na">sf</span><span class="o">.</span><span class="na">ezmorph</span><span class="o">:</span><span class="nl">ezmorph:</span><span class="mf">1.0</span><span class="o">.</span><span class="mi">6</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>         <span class="err">\</span><span class="o">---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">lang:</span><span class="n">commons</span><span class="o">-</span><span class="nl">lang:</span><span class="mf">2.4</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span> <span class="o">(*)</span>
+</span><span class='line'>     <span class="o">+---</span> <span class="n">org</span><span class="o">.</span><span class="na">codehaus</span><span class="o">.</span><span class="na">groovy</span><span class="o">:</span><span class="nl">groovy:</span><span class="mf">1.7</span><span class="o">.</span><span class="mi">10</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="nl">antlr:antlr:</span><span class="mf">2.7</span><span class="o">.</span><span class="mi">7</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="nl">asm:asm:</span><span class="mf">3.2</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="nl">asm:</span><span class="n">asm</span><span class="o">-</span><span class="nl">commons:</span><span class="mf">3.2</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">|</span>    <span class="err">\</span><span class="o">---</span> <span class="nl">asm:</span><span class="n">asm</span><span class="o">-</span><span class="nl">tree:</span><span class="mf">3.2</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">|</span>         <span class="err">\</span><span class="o">---</span> <span class="nl">asm:asm:</span><span class="mf">3.2</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span> <span class="o">(*)</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="nl">asm:</span><span class="n">asm</span><span class="o">-</span><span class="nl">util:</span><span class="mf">3.2</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">|</span>    <span class="err">\</span><span class="o">---</span> <span class="nl">asm:</span><span class="n">asm</span><span class="o">-</span><span class="nl">tree:</span><span class="mf">3.2</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span> <span class="o">(*)</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="nl">asm:</span><span class="n">asm</span><span class="o">-</span><span class="nl">analysis:</span><span class="mf">3.2</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">|</span>    <span class="err">\</span><span class="o">---</span> <span class="nl">asm:</span><span class="n">asm</span><span class="o">-</span><span class="nl">tree:</span><span class="mf">3.2</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span> <span class="o">(*)</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="err">\</span><span class="o">---</span> <span class="nl">asm:</span><span class="n">asm</span><span class="o">-</span><span class="nl">tree:</span><span class="mf">3.2</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span> <span class="o">(*)</span>
+</span><span class='line'>     <span class="o">+---</span> <span class="n">net</span><span class="o">.</span><span class="na">sourceforge</span><span class="o">.</span><span class="na">nekohtml</span><span class="o">:</span><span class="nl">nekohtml:</span><span class="mf">1.9</span><span class="o">.</span><span class="mi">9</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="err">\</span><span class="o">---</span> <span class="nl">xerces:xercesImpl:</span><span class="mf">2.8</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>         <span class="err">\</span><span class="o">---</span> <span class="n">xml</span><span class="o">-</span><span class="nl">apis:</span><span class="n">xml</span><span class="o">-</span><span class="nl">apis:</span><span class="mf">1.3</span><span class="o">.</span><span class="mi">03</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="err">\</span><span class="o">---</span> <span class="n">xml</span><span class="o">-</span><span class="nl">resolver:</span><span class="n">xml</span><span class="o">-</span><span class="nl">resolver:</span><span class="mf">1.2</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>從樹狀圖可以發現，
+http-builder 依賴的套件中，
+groovy:1.7.10 是多餘且冗長的部份。
+我們已經在另一行指定 groovy-all:1.8.3 這個版本，
+因此可以利用 exclude 設定將 groovy:1.7.10 排除。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">dependencies</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">groovy</span> <span class="s1">&#39;org.codehaus.groovy:groovy-all:1.8.3&#39;</span>
+</span><span class='line'>    <span class="n">compile</span> <span class="o">(</span><span class="s1">&#39;org.codehaus.groovy.modules.http-builder:http-builder:0.5.1&#39;</span><span class="o">)</span>  <span class="o">{</span>
+</span><span class='line'>        <span class="n">exclude</span> <span class="nl">group:</span> <span class="s1">&#39;org.codehaus.groovy&#39;</span><span class="o">,</span> <span class="nl">modules:</span> <span class="s1">&#39;groovy&#39;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>再重新執行一次 gradle dependencies，
+可以發現樹狀圖變得比較精簡，
+而 gradle 執行過程也會加快許多，
+不會在 Resolve dependencies 時卡住。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="o">+---</span> <span class="n">org</span><span class="o">.</span><span class="na">codehaus</span><span class="o">.</span><span class="na">groovy</span><span class="o">:</span><span class="n">groovy</span><span class="o">-</span><span class="nl">all:</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">3</span> <span class="o">[</span><span class="k">default</span><span class="o">]</span>
+</span><span class='line'><span class="err">\</span><span class="o">---</span> <span class="n">org</span><span class="o">.</span><span class="na">codehaus</span><span class="o">.</span><span class="na">groovy</span><span class="o">.</span><span class="na">modules</span><span class="o">.</span><span class="na">http</span><span class="o">-</span><span class="nl">builder:</span><span class="n">http</span><span class="o">-</span><span class="nl">builder:</span><span class="mf">0.5</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="k">default</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">+---</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">httpcomponents</span><span class="o">:</span><span class="nl">httpclient:</span><span class="mf">4.0</span><span class="o">.</span><span class="mi">3</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="n">org</span><span class="o">.</span><span class="na">apache</span><span class="o">.</span><span class="na">httpcomponents</span><span class="o">:</span><span class="nl">httpcore:</span><span class="mf">4.0</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">logging:</span><span class="n">commons</span><span class="o">-</span><span class="nl">logging:</span><span class="mf">1.1</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="err">\</span><span class="o">---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">codec:</span><span class="n">commons</span><span class="o">-</span><span class="nl">codec:</span><span class="mf">1.3</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">+---</span> <span class="n">net</span><span class="o">.</span><span class="na">sf</span><span class="o">.</span><span class="na">json</span><span class="o">-</span><span class="nl">lib:</span><span class="n">json</span><span class="o">-</span><span class="nl">lib:</span><span class="mf">2.3</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">logging:</span><span class="n">commons</span><span class="o">-</span><span class="nl">logging:</span><span class="mf">1.1</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span> <span class="o">(*)</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">beanutils:</span><span class="n">commons</span><span class="o">-</span><span class="nl">beanutils:</span><span class="mf">1.8</span><span class="o">.</span><span class="mi">0</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">|</span>    <span class="err">\</span><span class="o">---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">logging:</span><span class="n">commons</span><span class="o">-</span><span class="nl">logging:</span><span class="mf">1.1</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span> <span class="o">(*)</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">collections:</span><span class="n">commons</span><span class="o">-</span><span class="nl">collections:</span><span class="mf">3.2</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="o">+---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">lang:</span><span class="n">commons</span><span class="o">-</span><span class="nl">lang:</span><span class="mf">2.4</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="err">\</span><span class="o">---</span> <span class="n">net</span><span class="o">.</span><span class="na">sf</span><span class="o">.</span><span class="na">ezmorph</span><span class="o">:</span><span class="nl">ezmorph:</span><span class="mf">1.0</span><span class="o">.</span><span class="mi">6</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>         <span class="err">\</span><span class="o">---</span> <span class="n">commons</span><span class="o">-</span><span class="nl">lang:</span><span class="n">commons</span><span class="o">-</span><span class="nl">lang:</span><span class="mf">2.4</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span> <span class="o">(*)</span>
+</span><span class='line'>     <span class="o">+---</span> <span class="n">net</span><span class="o">.</span><span class="na">sourceforge</span><span class="o">.</span><span class="na">nekohtml</span><span class="o">:</span><span class="nl">nekohtml:</span><span class="mf">1.9</span><span class="o">.</span><span class="mi">9</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>    <span class="err">\</span><span class="o">---</span> <span class="nl">xerces:xercesImpl:</span><span class="mf">2.8</span><span class="o">.</span><span class="mi">1</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="o">|</span>         <span class="err">\</span><span class="o">---</span> <span class="n">xml</span><span class="o">-</span><span class="nl">apis:</span><span class="n">xml</span><span class="o">-</span><span class="nl">apis:</span><span class="mf">1.3</span><span class="o">.</span><span class="mi">03</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span><span class='line'>     <span class="err">\</span><span class="o">---</span> <span class="n">xml</span><span class="o">-</span><span class="nl">resolver:</span><span class="n">xml</span><span class="o">-</span><span class="nl">resolver:</span><span class="mf">1.2</span> <span class="o">[</span><span class="n">master</span><span class="o">,</span><span class="n">compile</span><span class="o">,</span><span class="n">runtime</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[讓 Octopress 支援更多語言的程式碼區塊（更新 Pygments）]]></title>
