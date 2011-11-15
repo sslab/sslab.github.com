@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Groovy | Hack × StrongSoft]]></title>
   <link href="http://sslab.github.com/blog/categories/groovy/atom.xml" rel="self"/>
   <link href="http://sslab.github.com/"/>
-  <updated>2011-11-15T10:06:39+08:00</updated>
+  <updated>2011-11-15T12:03:59+08:00</updated>
   <id>http://sslab.github.com/</id>
   <author>
     <name><![CDATA[StrongSoft]]></name>
@@ -12,6 +12,87 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Gradle + Groovy 1.8 + Log4j]]></title>
+    <link href="http://sslab.github.com/blog/2011/11/15/gradle-groovy-log4j/"/>
+    <updated>2011-11-15T11:44:00+08:00</updated>
+    <id>http://sslab.github.com/blog/2011/11/15/gradle-groovy-log4j</id>
+    <content type="html"><![CDATA[<p>Groovy 從 1.8 版本開始支援 @Log 標記（Annotation），共有四種：</p>
+
+<ul>
+<li>@Log for java.util.logging</li>
+<li>@Commons for Commons-Logging</li>
+<li>@Log4j for Log4J</li>
+<li>@Slf4j for SLF4J</li>
+</ul>
+
+
+<p>這篇教學以 Apache Log4j 為例，搭配 Gradle 專案建置 Script。</p>
+
+<p>先在 build.gradle 設定 dependencies，加入 groovy 1.8 及 log4j 1.2 的設定。</p>
+
+<p>``` groovy
+apply plugin: 'java'
+apply plugin: 'groovy'</p>
+
+<p>dependencies {</p>
+
+<pre><code>groovy 'org.codehaus.groovy:groovy-all:1.8.3'
+runtime 'log4j:log4j:1.2.16'
+</code></pre>
+
+<p>}
+```</p>
+
+<p>在 class 上方加入 ＠Log4j，
+這個 Annotation 由 groovy.util.logging package 提供。
+在程式碼需要除錯訊息的地方加入 Log 輸出。</p>
+
+<blockquote><p>路徑： src/main/groovy/SimpleClass.groovy</p></blockquote>
+
+<p>``` groovy
+import groovy.util.logging.*</p>
+
+<p>@Log4j
+class SimpleClass {
+  def log2test {</p>
+
+<pre><code>log.debug 'message send to logger'
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>依照訊息的層級，可以呼叫其他不同方法：</p>
+
+<ul>
+<li>log.info</li>
+<li>log.debug</li>
+<li>log.warning</li>
+<li>log.error</li>
+</ul>
+
+
+<p>接下來要定義一個 log4j.properties 設定檔。</p>
+
+<blockquote><p>路徑： src/main/resources/log4j.properties</p></blockquote>
+
+<p>``` properties
+log4j.appender.file=org.apache.log4j.FileAppender
+log4j.appender.file.File=stacktrace.log
+log4j.appender.file.encoding=utf-8
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+log4j.appender.file.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n</p>
+
+<p>log4j.rootLogger=debug, file
+```</p>
+
+<p>這一組設定會將 Log 寫入 stacktrace.log 記錄檔，
+並且採用 UTF-8 編碼（支援中文訊息）。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[解決 Gradle dependency 處理速度慢的問題]]></title>

@@ -5,13 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>讓 Octopress 支援更多語言的程式碼區塊（更新 Pygments） - Hack × StrongSoft</title>
+  <title>Gradle + Groovy 1.8 + Log4j - Hack × StrongSoft</title>
   <meta name="author" content="StrongSoft">
 
   
-  <meta name="description" content="如果在 Octopress 的文章中，程式碼區塊用了不支援的程式語言，例如 Groovy： 1
-2
-3 ``` groovy println 'hello' ``` 執行 rake generate 就會爆炸！ /Users/user1/.rvm/gems/ruby-1.9.2-p290/gems &hellip;">
+  <meta name="description" content="Groovy 從 1.8 版本開始支援 @Log 標記（Annotation），共有四種： @Log for java.util.logging
+@Commons for Commons-Logging
+@Log4j for Log4J
+@Slf4j for SLF4J 這篇教學以 Apache &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://sslab.github.com/blog/2011/11/13/octopress-upgrade-pygments">
+  <link rel="canonical" href="http://sslab.github.com/blog/2011/11/15/gradle-groovy-log4j">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -79,7 +80,7 @@
   
   <header>
     
-      <h1 class="entry-title">讓 Octopress 支援更多語言的程式碼區塊（更新 Pygments）</h1>
+      <h1 class="entry-title">Gradle + Groovy 1.8 + Log4j</h1>
     
     
       <p class="meta">
@@ -90,7 +91,7 @@
 
   
 
-<time datetime="2011-11-13T16:00:00+08:00" pubdate>Nov 13<span>th</span>, 2011</time>
+<time datetime="2011-11-15T11:44:00+08:00" pubdate>Nov 15<span>th</span>, 2011</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -99,58 +100,95 @@
   </header>
 
 
-<div class="entry-content"><p>如果在 Octopress 的文章中，程式碼區塊用了不支援的程式語言，例如 Groovy：</p>
+<div class="entry-content"><p>Groovy 從 1.8 版本開始支援 @Log 標記（Annotation），共有四種：</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<ul>
+<li>@Log for java.util.logging</li>
+<li>@Commons for Commons-Logging</li>
+<li>@Log4j for Log4J</li>
+<li>@Slf4j for SLF4J</li>
+</ul>
+
+
+<p>這篇教學以 Apache Log4j 為例，搭配 Gradle 專案建置 Script。</p>
+
+<p>先在 build.gradle 設定 dependencies，加入 groovy 1.8 及 log4j 1.2 的設定。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'> ``` groovy
-</span><span class='line'> println 'hello'
-</span><span class='line'> ```</span></code></pre></td></tr></table></div></figure>
-
-
-<p>執行 rake generate 就會爆炸！</p>
-
-<blockquote><p>/Users/user1/.rvm/gems/ruby-1.9.2-p290/gems/rubypython-0.5.1/lib/rubypython/rubypyproxy.rb:198:in `method_missing&#8217;: ClassNotFound: no lexer for alias &#8216;groovy&#8217; found (RubyPython::PythonError)</p></blockquote>
-
-<p>因為 Octopress 的程式碼區塊 Syntax Highlight，
-是使用 <a href="https://github.com/tmm1/pygments.rb">pygments.rb</a> 這個套件；
-而 pygments.rb 會再去呼叫 Python 的 <a href="http://pygments.org/">Pygments</a>，
-因此災難的源頭就是 Pygments 不支援區塊指定的程式語言。</p>
-
-<p>但如果從 Pygments 的 <a href="http://pygments.org/languages/">Supported languages</a> 清單，
-卻又可能發現清單中明明有列出該語言名稱。
-這時候必須到 <a href="http://pygments.org/docs/lexers/">Available lexers</a> 查詢，
-如果在程式語言的說明有一行 <strong>New in Pygments 1.5.</strong> ，
-就表示只要將 Pygments 更新到 1.5 版，
-即可支援該程式語言（目前 Pygments 的穩定版為 1.4）。</p>
-
-<p>更新的步驟如下：</p>
-
-<p>先切換到 pygments.rb 資料夾</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> .rvm/gems/ruby-1.9.2-p290/gems/pygments.rb-0.1.3/vendor
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">apply</span> <span class="nl">plugin:</span> <span class="s1">&#39;java&#39;</span>
+</span><span class='line'><span class="n">apply</span> <span class="nl">plugin:</span> <span class="s1">&#39;groovy&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">dependencies</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">groovy</span> <span class="s1">&#39;org.codehaus.groovy:groovy-all:1.8.3&#39;</span>
+</span><span class='line'>  <span class="n">runtime</span> <span class="s1">&#39;log4j:log4j:1.2.16&#39;</span>
+</span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>用 hg 下載一份最新版 <a href="https://bitbucket.org/birkenfeld/pygments-main">Pygments</a>，</p>
+<p>在 class 上方加入 ＠Log4j，
+這個 Annotation 由 groovy.util.logging package 提供。
+在程式碼需要除錯訊息的地方加入 Log 輸出。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>hg clone https://bitbucket.org/birkenfeld/pygments-main
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>再將 Pygments-1.4 的資料夾掉包</p>
+<blockquote><p>路徑： src/main/groovy/SimpleClass.groovy</p></blockquote>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>mv Pygments-1.4 Pygments-1.4-old
-</span><span class='line'>mv pygments-main Pygments-1.4
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kn">import</span> <span class="nn">groovy.util.logging.*</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Log4j</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">SimpleClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kt">def</span> <span class="n">log2test</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">log</span><span class="o">.</span><span class="na">debug</span> <span class="s1">&#39;message send to logger&#39;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>回到 Octopress Blog 重新執行 rake generate，應該就不會爆炸了。</p>
+<p>依照訊息的層級，可以呼叫其他不同方法：</p>
+
+<ul>
+<li>log.info</li>
+<li>log.debug</li>
+<li>log.warning</li>
+<li>log.error</li>
+</ul>
+
+
+<p>接下來要定義一個 log4j.properties 設定檔。</p>
+
+<blockquote><p>路徑： src/main/resources/log4j.properties</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='properties'><span class='line'><span class="na">log4j.appender.file</span><span class="o">=</span><span class="s">org.apache.log4j.FileAppender</span>
+</span><span class='line'><span class="na">log4j.appender.file.File</span><span class="o">=</span><span class="s">stacktrace.log</span>
+</span><span class='line'><span class="na">log4j.appender.file.encoding</span><span class="o">=</span><span class="s">utf-8</span>
+</span><span class='line'><span class="na">log4j.appender.file.layout</span><span class="o">=</span><span class="s">org.apache.log4j.PatternLayout</span>
+</span><span class='line'><span class="na">log4j.appender.file.layout.ConversionPattern</span><span class="o">=</span><span class="s">%d{ABSOLUTE} %5p %c{1}:%L - %m%n</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">log4j.rootLogger</span><span class="o">=</span><span class="s">debug, file</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這一組設定會將 Log 寫入 stacktrace.log 記錄檔，
+並且採用 UTF-8 編碼（支援中文訊息）。</p>
 </div>
 
 
@@ -168,12 +206,12 @@
 
   
 
-<time datetime="2011-11-13T16:00:00+08:00" pubdate>Nov 13<span>th</span>, 2011</time>
+<time datetime="2011-11-15T11:44:00+08:00" pubdate>Nov 15<span>th</span>, 2011</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/groovy/'>Groovy</a>
   
 </span>
 
@@ -182,7 +220,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sslab.github.com/blog/2011/11/13/octopress-upgrade-pygments/" data-via="" data-counturl="http://sslab.github.com/blog/2011/11/13/octopress-upgrade-pygments/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://sslab.github.com/blog/2011/11/15/gradle-groovy-log4j/" data-via="" data-counturl="http://sslab.github.com/blog/2011/11/15/gradle-groovy-log4j/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -195,10 +233,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2011/11/13/groovy-grab-markdownj/" title="Previous Post: MarkdownJ 使用範例（Groovy + Grab）">&laquo; MarkdownJ 使用範例（Groovy + Grab）</a>
+        <a class="basic-alignment left" href="/blog/2011/11/15/gradle-dependency-slow-problem/" title="Previous Post: 解決 Gradle dependency 處理速度慢的問題">&laquo; 解決 Gradle dependency 處理速度慢的問題</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2011/11/15/gradle-dependency-slow-problem/" title="next Post: 解決 Gradle dependency 處理速度慢的問題">解決 Gradle dependency 處理速度慢的問題 &raquo;</a>
       
     </p>
   </footer>
@@ -265,8 +301,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://sslab.github.com/blog/2011/11/13/octopress-upgrade-pygments/';
-        var disqus_url = 'http://sslab.github.com/blog/2011/11/13/octopress-upgrade-pygments/';
+        var disqus_identifier = 'http://sslab.github.com/blog/2011/11/15/gradle-groovy-log4j/';
+        var disqus_url = 'http://sslab.github.com/blog/2011/11/15/gradle-groovy-log4j/';
         var disqus_script = 'embed.js';
       
     (function () {

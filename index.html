@@ -9,13 +9,10 @@
   <meta name="author" content="StrongSoft">
 
   
-  <meta name="description" content="Gradle 的 dependencies 可以設定 Maven Repository 的套件，
-讓 Gradle 自動下載相依的 Jar 檔案。
-例如 HttpBuilder 的設定範例（build.gradle）： 1
-2
-3
-4
-dependencies { groovy &#39;org. &hellip;">
+  <meta name="description" content="Groovy 從 1.8 版本開始支援 @Log 標記（Annotation），共有四種： @Log for java.util.logging
+@Commons for Commons-Logging
+@Log4j for Log4J
+@Slf4j for SLF4J 這篇教學以 Apache &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +77,127 @@ dependencies { groovy &#39;org. &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2011/11/15/gradle-groovy-log4j/">Gradle + Groovy 1.8 + Log4j</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+  
+
+<time datetime="2011-11-15T11:44:00+08:00" pubdate>Nov 15<span>th</span>, 2011</time>
+        
+         | <a href="/blog/2011/11/15/gradle-groovy-log4j/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Groovy 從 1.8 版本開始支援 @Log 標記（Annotation），共有四種：</p>
+
+<ul>
+<li>@Log for java.util.logging</li>
+<li>@Commons for Commons-Logging</li>
+<li>@Log4j for Log4J</li>
+<li>@Slf4j for SLF4J</li>
+</ul>
+
+
+<p>這篇教學以 Apache Log4j 為例，搭配 Gradle 專案建置 Script。</p>
+
+<p>先在 build.gradle 設定 dependencies，加入 groovy 1.8 及 log4j 1.2 的設定。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="n">apply</span> <span class="nl">plugin:</span> <span class="s1">&#39;java&#39;</span>
+</span><span class='line'><span class="n">apply</span> <span class="nl">plugin:</span> <span class="s1">&#39;groovy&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">dependencies</span> <span class="o">{</span>
+</span><span class='line'>  <span class="n">groovy</span> <span class="s1">&#39;org.codehaus.groovy:groovy-all:1.8.3&#39;</span>
+</span><span class='line'>  <span class="n">runtime</span> <span class="s1">&#39;log4j:log4j:1.2.16&#39;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在 class 上方加入 ＠Log4j，
+這個 Annotation 由 groovy.util.logging package 提供。
+在程式碼需要除錯訊息的地方加入 Log 輸出。</p>
+
+<blockquote><p>路徑： src/main/groovy/SimpleClass.groovy</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='groovy'><span class='line'><span class="kn">import</span> <span class="nn">groovy.util.logging.*</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Log4j</span>
+</span><span class='line'><span class="kd">class</span> <span class="nc">SimpleClass</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kt">def</span> <span class="n">log2test</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">log</span><span class="o">.</span><span class="na">debug</span> <span class="s1">&#39;message send to logger&#39;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>依照訊息的層級，可以呼叫其他不同方法：</p>
+
+<ul>
+<li>log.info</li>
+<li>log.debug</li>
+<li>log.warning</li>
+<li>log.error</li>
+</ul>
+
+
+<p>接下來要定義一個 log4j.properties 設定檔。</p>
+
+<blockquote><p>路徑： src/main/resources/log4j.properties</p></blockquote>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='properties'><span class='line'><span class="na">log4j.appender.file</span><span class="o">=</span><span class="s">org.apache.log4j.FileAppender</span>
+</span><span class='line'><span class="na">log4j.appender.file.File</span><span class="o">=</span><span class="s">stacktrace.log</span>
+</span><span class='line'><span class="na">log4j.appender.file.encoding</span><span class="o">=</span><span class="s">utf-8</span>
+</span><span class='line'><span class="na">log4j.appender.file.layout</span><span class="o">=</span><span class="s">org.apache.log4j.PatternLayout</span>
+</span><span class='line'><span class="na">log4j.appender.file.layout.ConversionPattern</span><span class="o">=</span><span class="s">%d{ABSOLUTE} %5p %c{1}:%L - %m%n</span>
+</span><span class='line'>
+</span><span class='line'><span class="na">log4j.rootLogger</span><span class="o">=</span><span class="s">debug, file</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>這一組設定會將 Log 寫入 stacktrace.log 記錄檔，
+並且採用 UTF-8 編碼（支援中文訊息）。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -501,6 +619,10 @@ Java / Groovy 程式可以利用 MarkdownJ 這個函式庫。</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2011/11/15/gradle-groovy-log4j/">Gradle + Groovy 1.8 + Log4j</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2011/11/15/gradle-dependency-slow-problem/">解決 Gradle dependency 處理速度慢的問題</a>
