@@ -87,11 +87,11 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name: sslab-hack
+disqus_short_name: "sslab-hack"
 disqus_show_comment_count: true
 
 # Google Analytics
-google_analytics_tracking_id: UA-298440-11
+google_analytics_tracking_id: "UA-298440-11"
    
 # Facebook Like
 facebook_like: true   
